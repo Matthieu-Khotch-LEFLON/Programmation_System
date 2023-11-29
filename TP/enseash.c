@@ -7,5 +7,8 @@
 int main(int argc, char *argv[]){
 	char buf[] = "Bienvenue dans le Shell ENSEA.\nPour quitter, tapez 'exit'.\n";
 	size_t size1 = strlen(buf);
-	write(STDOUT_FILENO,buf,size1);
+	if(write(STDOUT_FILENO,buf,size1) == -1){
+		perror("write");
+		exit(EXIT_FAILURE);
+	}
 }
