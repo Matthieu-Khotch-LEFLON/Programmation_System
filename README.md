@@ -14,6 +14,7 @@ int main(int argc, char *argv[]){
 	write(STDOUT_FILENO,buf,size1);
 }
 
+```
 ![Screenshot](Assets/TerminalQuestion1.PNG)
 
 
@@ -72,3 +73,6 @@ int main(int argc, char *argv[]){
   	 }
    }
   }
+
+```
+![Screenshot](Assets/TerminalQuestion2.PNG)
