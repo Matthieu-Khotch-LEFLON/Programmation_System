@@ -15,7 +15,7 @@ int main(int argc, char *argv[]){
 }
 
 ```
-![Screenshot](Assets/TerminalQuestion1.PNG)
+![Screenshot](Assets/TerminalQuestion1.png)
 
 
 Question 2
@@ -75,4 +75,4 @@ int main(int argc, char *argv[]){
   }
 
 ```
-![Screenshot](Assets/TerminalQuestion2.PNG)
+![Screenshot](Assets/TerminalQuestion2.png)
