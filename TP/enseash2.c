@@ -11,6 +11,7 @@ int main(int argc, char *argv[]){
 	char prompt[] = "enseash % ";
 	char clav[32];
 	char date[] = "date";
+	char bye[] = "Bye bye...";
 	
 	size_t size1 = strlen(buf);
 	size_t size2 = strlen(prompt);
@@ -52,7 +53,15 @@ int main(int argc, char *argv[]){
         }
 		
 		else{
-			 execlp(clav, clav,(char *)NULL);
+			
+			if (strcmp(clav, "exit") ==0){
+				write(STDOUT_FILENO, bye, sizeof(bye));
+			}
+			
+			else{ 
+			execlp(clav, clav,(char *)NULL);
+			}
+			
 		}
 	}
 }
