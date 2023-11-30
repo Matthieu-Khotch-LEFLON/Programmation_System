@@ -6,7 +6,7 @@ Question 1:
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+#include <string.h>     /* Inclusion of all libraries needed */
 
 int main(int argc, char *argv[]){
 	char buf[] = "Bienvenue dans le Shell ENSEA.\nPour quitter, tapez 'exit'.\n";
@@ -17,6 +17,7 @@ int main(int argc, char *argv[]){
 ```
 ![Screenshot](Assets/TerminalQuestion1.png)
 
+=> For this first program, we have created a mini shell, with a display of a simple welcoming message.
 
 Question 2
 ```ruby
