@@ -38,41 +38,41 @@ int main(int argc, char *argv[]){
 	size_t size2 = strlen(prompt);		/* Here we have all character strings and size that we need */
 	
 	if(write(STDOUT_FILENO, buf,size1) == -1){
-        perror("write");
-		    exit(EXIT_FAILURE);
+        	perror("write");
+		exit(EXIT_FAILURE);
 	}
 	
 	while(1){						/* Infinite loop */
 		
-  	if(write(STDOUT_FILENO, prompt,size2) == -1){		/* Display of prompt line */
-          perror("write");
-  		    exit(EXIT_FAILURE);
-  	}
+  		if(write(STDOUT_FILENO, prompt,size2) == -1){		/* Display of prompt line */
+			perror("write");
+			exit(EXIT_FAILURE);
+  		}
   	
-  	ssize_t bytesRead = read(STDIN_FILENO, clav, sizeof(clav));		/* Reading of the command */
-    	if (bytesRead == -1) {
-          	perror("read");
-          	exit(EXIT_FAILURE);
-    }
+  		ssize_t bytesRead = read(STDIN_FILENO, clav, sizeof(clav));		/* Reading of the command */
+    		if (bytesRead == -1) {
+          		perror("read");
+          		exit(EXIT_FAILURE);
+    		}
   
-    clav[bytesRead - 1] = '\0';		/* We delete the last element of the character strings */
+    		clav[bytesRead - 1] = '\0';		/* We delete the last element of the character strings */
   	
-    int pid, status;
-  	pid = fork();
+    		int pid, status;
+  		pid = fork();
   	
-  	if (pid != 0){			/* Father's code */
-  		    wait(&status);
-  	}
+  		if (pid != 0){			/* Father's code */
+			wait(&status);
+  		}
   	
-  	else{						/* Child's code */
-  		  if (strlen(clav) == 0) {		/* Test if we just do "Enter" */
-                execlp(date, date, (char *)NULL);
-        }
-  		  else{					/* If not, we launch the command that the user sent */
-                execlp(clav, clav,(char *)NULL);
+  		else{						/* Child's code */
+  		 	 if (strlen(clav) == 0) {		/* Test if we just do "Enter" */
+                		execlp(date, date, (char *)NULL);
+        		}
+  		  	else{					/* If not, we launch the command that the user sent */
+                		execlp(clav, clav,(char *)NULL);
   		  }
-  	 }
-   }
+  	 	}		
+   	}
   }
 ```
 ![Screenshot](Assets/TerminalQuestion2.png)
@@ -116,7 +116,8 @@ int main(int argc, char *argv[]) {
     		if (bytesRead == -1) {
         		perror("read");
         		exit(EXIT_FAILURE);
-       	 	} 
+       	 	}
+
    	 	else if (bytesRead == 0) {				/* We test here if the user type <crtl> + d, and if the test is verified, we go out of the shell */
 			write(STDOUT_FILENO, bye, sizeof(bye));
             		exit(EXIT_SUCCESS);
@@ -132,6 +133,7 @@ int main(int argc, char *argv[]) {
 		if (pid != 0) {
             		wait(&status);
         	}
+
 		else {
             		if (strlen(clav) == 0) {
                 		execlp(date, date, (char *)NULL);
