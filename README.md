@@ -147,7 +147,7 @@ int main(int argc, char *argv[]) {
 }
 ```
 ![Screenshot](Assets/TerminalQuestion3.png)
-
+=> Here, we have upgraded a little bit our previous code to have more tests on what the user type in the prompt. 
 
 
 ### Question 4
@@ -256,4 +256,4 @@ int main(int argc, char *argv[]) {
 
 
 
-=> Here, we have upgraded a little bit our previous code to have more tests on what the user type in the prompt.
+
