@@ -1,6 +1,6 @@
-### Programmation_System ###
+# Programmation_System 
 
-Question 1:
+### Question 1 :
 ```ruby
 #include <sys/types.h>
 #include <unistd.h>
@@ -19,7 +19,7 @@ int main(int argc, char *argv[]){
 
 => For this first program, we have created a mini shell, with a display of a simple welcoming message.
 
-Question 2:
+### Question 2:
 ```ruby
 #include <sys/types.h>
 #include <unistd.h>
@@ -70,16 +70,16 @@ int main(int argc, char *argv[]){
         		}
   		  	else{					/* If not, we launch the command that the user sent */
                 		execlp(clav, clav,(char *)NULL);
-  		  }
-  	 	}		
-   	}
+  		  	}
+  	 	}
+	}
   }
 ```
 ![Screenshot](Assets/TerminalQuestion2.png)
 
 => For this second part, we did an infinite loop where the user can enter a command of his choice and launch it, or if he don't enter anything, we display the date.
 
-Question 3:
+### Question 3:
 ```ruby
 #include <sys/types.h>
 #include <unistd.h>
@@ -147,5 +147,113 @@ int main(int argc, char *argv[]) {
 }
 ```
 ![Screenshot](Assets/TerminalQuestion3.png)
+
+
+
+### Question 4
+```ruby
+
+#include <sys/types.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/wait.h>
+
+void display_status(char *prompt, int status) {
+    char exit_prompt[32];
+    
+    if (WIFEXITED(status)) {
+        sprintf(exit_prompt, " [exit:%d] ", WEXITSTATUS(status));
+        write(STDOUT_FILENO, prompt, strlen(prompt)-2);
+        write(STDOUT_FILENO, exit_prompt, strlen(exit_prompt));
+        write(STDOUT_FILENO, " % ", 3);
+    } 
+    
+    else if (WIFSIGNALED(status)) {
+        sprintf(exit_prompt, " [sign:%d] ", WTERMSIG(status));
+        write(STDOUT_FILENO, prompt, strlen(prompt)-2);
+        write(STDOUT_FILENO, exit_prompt, strlen(exit_prompt));
+        write(STDOUT_FILENO, " % ", 3);
+    }
+}
+
+int main(int argc, char *argv[]) {
+    char buf[] = "Bienvenue dans le Shell ENSEA.\nPour quitter, tapez 'exit'.\n";
+    char prompt[] = "enseash % ";
+    char clav[32];
+    char date[] = "date";
+    char bye[] = "Bye bye...\n";
+
+    size_t size1 = strlen(buf);
+    size_t size2 = strlen(prompt);
+
+    if (write(STDOUT_FILENO, buf, size1) == -1) {
+        perror("write");
+        exit(EXIT_FAILURE);
+    }
+    
+    if (write(STDOUT_FILENO, prompt, size2) == -1) {
+            perror("write");
+            exit(EXIT_FAILURE);
+        }
+        
+    while (1) {
+        
+
+        ssize_t bytesRead = read(STDIN_FILENO, clav, sizeof(clav));
+        
+        if (bytesRead == -1) {
+            perror("read");
+            exit(EXIT_FAILURE);
+        } 
+        
+        else if (bytesRead == 0) {
+            write(STDOUT_FILENO, bye, sizeof(bye));
+            exit(EXIT_SUCCESS);
+        }
+        
+        clav[bytesRead - 1] = '\0';
+
+        if (strcmp(clav, "exit") == 0) {
+            write(STDOUT_FILENO, bye, sizeof(bye));
+            exit(EXIT_SUCCESS);
+        }
+
+        int pid, status;
+        pid = fork();
+
+        if (pid == -1) {
+            perror("fork");
+            exit(EXIT_FAILURE);
+        }
+        
+        if (pid != 0) {
+            wait(&status);
+            display_status(prompt, status);
+        } 
+        
+        else {
+            if (strlen(clav) == 0) {
+                execlp(date, date, (char *)NULL);
+            } 
+            
+            else {
+                execlp(clav, clav, (char *)NULL);
+            }
+            
+            perror("execlp");
+            exit(EXIT_FAILURE);
+        }
+    }
+
+    return 0;
+}
+
+
+```
+![SCREENSHOT](Assets/TerminalQuestion4.png)
+
+
 
 => Here, we have upgraded a little bit our previous code to have more tests on what the user type in the prompt.
