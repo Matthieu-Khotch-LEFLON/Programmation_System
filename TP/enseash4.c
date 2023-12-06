@@ -10,14 +10,14 @@ void display_status(char *prompt, int status) {
     
     if (WIFEXITED(status)) {
         sprintf(exit_prompt, " [exit:%d] ", WEXITSTATUS(status));
-        write(STDOUT_FILENO, prompt-2, strlen(prompt));
+        write(STDOUT_FILENO, prompt, strlen(prompt)-2);
         write(STDOUT_FILENO, exit_prompt, strlen(exit_prompt));
         write(STDOUT_FILENO, " % ", 3);
     } 
     
     else if (WIFSIGNALED(status)) {
         sprintf(exit_prompt, " [sign:%d] ", WTERMSIG(status));
-        write(STDOUT_FILENO, prompt-2, strlen(prompt));
+        write(STDOUT_FILENO, prompt, strlen(prompt)-2);
         write(STDOUT_FILENO, exit_prompt, strlen(exit_prompt));
         write(STDOUT_FILENO, " % ", 3);
     }
