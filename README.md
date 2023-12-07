@@ -256,6 +256,7 @@ int main(int argc, char *argv[]) {
 ```
 ![SCREENSHOT](Assets/TerminalQuestion4.png)
 
+=> For this program, we add a new feature: when a command is typed in the shell, the program return the result and the prompt diplay if the program runned correctly with the value of the exit code or the number of the signal error if one have been detected. So the prompt has been improved a little to have more information on what we tested.
 
 
 ### Question 5 :
@@ -369,6 +370,7 @@ int main(int argc, char *argv[]) {
 
 ![SCREENSHOT](Assets/TerminalQuestion5.png)
 
+=> A new improvement to our prompt, now it display also the time that the program took to entirely execute the command in ms.
 
 ### Question 6 : 
 
@@ -493,3 +495,4 @@ int main(int argc, char *argv[]) {
 ```
 ![SCREENSHOT](Assets/TerminalQuestion6.png)
 
+=> Now, our program is capable of taking commands with multiple arguments and be more customizable in terms of command we want to execute.
