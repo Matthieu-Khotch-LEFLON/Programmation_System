@@ -123,7 +123,7 @@ int main(int argc, char *argv[]) {
             		exit(EXIT_SUCCESS);
         	}
 
-        	clav[bytesRead - 1] = '\0';
+        	clav[bytesRead - 1] = '\0';				/* We delete the last character of the character's chain to have only the command typed in the shell */
     
      		if (strcmp(clav, "exit") == 0) {			/* We test if the user typed "exit", and if yes, we go out of the code as well without making a fork */
             		write(STDOUT_FILENO, bye, sizeof(bye));
@@ -162,17 +162,17 @@ int main(int argc, char *argv[]) {
 #include <string.h>
 #include <sys/wait.h>
 
-void display_status(char *prompt, int status) {
+void display_status(char *prompt, int status) {						/* This function displays different answers depending on the program entered previously */
     char exit_prompt[32];
     
-    if (WIFEXITED(status)) {
+    if (WIFEXITED(status)) {								/* If the program finish without errors, we display the exit code */
         sprintf(exit_prompt, " [exit:%d] ", WEXITSTATUS(status));
         write(STDOUT_FILENO, prompt, strlen(prompt)-2);
         write(STDOUT_FILENO, exit_prompt, strlen(exit_prompt));
-        write(STDOUT_FILENO, " % ", 3);
+        write(STDOUT_FILENO, " % ", 3);							/* In the order, we display enseash without "% ", [exit: "number of exit code"], " % " */
     } 
     
-    else if (WIFSIGNALED(status)) {
+    else if (WIFSIGNALED(status)) {							/* If the program finish with signal error, we display the signal exit code */
         sprintf(exit_prompt, " [sign:%d] ", WTERMSIG(status));
         write(STDOUT_FILENO, prompt, strlen(prompt)-2);
         write(STDOUT_FILENO, exit_prompt, strlen(exit_prompt));
@@ -232,7 +232,7 @@ int main(int argc, char *argv[]) {
         
         if (pid != 0) {
             wait(&status);
-            display_status(prompt, status);
+            display_status(prompt, status);				/* Call of our function defined previously above */
         } 
         
         else {
@@ -268,13 +268,13 @@ int main(int argc, char *argv[]) {
 #include <sys/wait.h>
 #include <time.h>
 
-void display_status(char *prompt, int status, struct timespec *start_time) {
+void display_status(char *prompt, int status, struct timespec *start_time) {				/* This addition of the previous function allows us to calculate the time in ms to run the command entered by the user */
     char exit_prompt[32];
     
-    struct timespec end_time;
-    clock_gettime(CLOCK_REALTIME, &end_time);
+    struct timespec end_time;										/* Declaration of a variable equipped with the timespec's structure */
+    clock_gettime(CLOCK_REALTIME, &end_time);								/* We get the time when the function has finished running */
     long elapsed_time = (end_time.tv_sec - start_time->tv_sec) * 1000 +
-                        (end_time.tv_nsec - start_time->tv_nsec) / 1000000;
+                        (end_time.tv_nsec - start_time->tv_nsec) / 1000000;				/* Conversion of the time in ms */
     
     if (WIFEXITED(status)) {
         sprintf(exit_prompt, " [exit:%d|%ldms] ", WEXITSTATUS(status), elapsed_time);
@@ -313,7 +313,7 @@ int main(int argc, char *argv[]) {
         
     while (1) {
 		
-		struct timespec start_time;
+		struct timespec start_time;						/* Declaration of an other variable equipped with the timespec's structure */
 
         ssize_t bytesRead = read(STDIN_FILENO, clav, sizeof(clav));
         
@@ -343,7 +343,7 @@ int main(int argc, char *argv[]) {
         }
         
         if (pid != 0) {
-            clock_gettime(CLOCK_REALTIME, &start_time);
+            clock_gettime(CLOCK_REALTIME, &start_time);					/* Start of counting time */
             wait(&status);
             display_status(prompt, status, &start_time);
         }
@@ -466,19 +466,19 @@ int main(int argc, char *argv[]) {
                 execlp(date, date, (char *)NULL);
             } 
             
-            else {
-                char *token = strtok(clav, " ");
+            else {									/* Here, we are improving the previous else loop by taking commands with arguments*/
+                char *token = strtok(clav, " ");					/* Creation of a string array where arguments separated with a space, are splitted in a list of character's chain */
 				char *arguments[32];
 				int i = 0;
 
-				while (token != NULL) {
-					arguments[i++] = token;
-					token = strtok(NULL, " ");
+				while (token != NULL) {					/* We make a loop until our array is empty of arguments */
+					arguments[i++] = token;				/* Each time we go in the loop, the argument is copied in the array "arguments" */ 
+					token = strtok(NULL, " ");			/* We empty the array with NULL strings */
 				}
 
-				arguments[i] = NULL;
+				arguments[i] = NULL;					/* We add manually the indication of the end of the string array */
             
-				execvp(arguments[0], arguments);
+				execvp(arguments[0], arguments);			/* We execute the command with arguments gived by the user with in first arguments the element who correspond to the execute path and after the command to execute */
             
 		}
             
